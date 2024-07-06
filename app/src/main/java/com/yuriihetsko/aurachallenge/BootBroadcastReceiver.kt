@@ -13,6 +13,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.yuriihetsko.aurachallenge.data.BootEventStorage
 import java.util.concurrent.TimeUnit
 
 class BootBroadcastReceiver : BroadcastReceiver() {
@@ -20,20 +21,18 @@ class BootBroadcastReceiver : BroadcastReceiver() {
         println("GETZ.BootBroadcastReceiver.onReceive--> intent.action=${intent.action}")
 
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            // Start the WorkManager task
-            scheduleNotificationTask(context)
+            BootEventStorage.addBootEvent(context, System.currentTimeMillis())
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val serviceIntent = Intent(context, BootService::class.java)
+                context.startForegroundService(serviceIntent)
+            } else {
+                NotificationSchedulerWorkManager.scheduleNotificationTask(context)
+            }
         }
     }
 
-    private fun scheduleNotificationTask(context: Context) {
-        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
-            .build()
 
-        println("GETZ.BootBroadcastReceiver.scheduleNotificationTask--> ")
-
-        WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork("NotificationWork", ExistingPeriodicWorkPolicy.UPDATE, workRequest)
-    }
 }
 
 class NotificationWorker(
@@ -50,12 +49,10 @@ class NotificationWorker(
     private fun showNotification(context: Context) {
         println("GETZ.NotificationWorker.showNotification--> ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    android.Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED
             ) {
-                // Permission is not granted, handle this scenario
+                // Todo Permission is not granted, handle this scenario
                 return
             }
         }
