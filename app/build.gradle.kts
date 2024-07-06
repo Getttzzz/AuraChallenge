@@ -43,6 +43,7 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.room.android)
+    implementation(libs.work.manager.android)
     ksp(libs.room.compiler.android)
 
     testImplementation(libs.junit)

@@ -13,6 +13,7 @@ constraintlayout = "2.1.4"
 koin = "3.5.6"
 room = "2.6.1"
 kotlin-symbol-processing = "1.9.23-1.0.20"
+work-manager = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +28,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 room-android = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler-android = { module = "androidx.room:room-compiler", version.ref = "room" }
+work-manager-android = { module = "androidx.work:work-runtime-ktx", version.ref = "work-manager" }
 
 
 [plugins]
