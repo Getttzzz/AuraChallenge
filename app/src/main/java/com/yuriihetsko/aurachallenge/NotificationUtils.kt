@@ -24,7 +24,6 @@ object NotificationUtils {
 
     // todo investigate why notification doesn't show
     // todo 1) check is everything is ok with smallIcon
-    // todo 2) check is
     fun showNotification(context: Context) {
 
         //todo handle permission if not granted

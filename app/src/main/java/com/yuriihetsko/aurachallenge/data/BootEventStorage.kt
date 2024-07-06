@@ -2,6 +2,8 @@ package com.yuriihetsko.aurachallenge.data
 
 import android.content.Context
 
+
+//todo use room database instead in case of having more time
 object BootEventStorage {
     private const val PREFS_NAME = "boot_prefs"
     private const val KEY_BOOT_TIMES = "boot_times"
